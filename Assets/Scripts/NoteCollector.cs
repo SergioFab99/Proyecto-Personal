@@ -1,28 +1,32 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NoteCollector : MonoBehaviour
 {
-    public float detectionRadius = 4f;  // Radio de detección alrededor de la nota
-    public AudioClip recolectarSonido;  // Clip de audio que se reproducirá al recolectar la nota
-    private AudioSource audioSource;    // AudioSource para reproducir el sonido
-    private Transform player;           // Referencia al transform del jugador
-    private GameManager gameManager;    // Referencia al GameManager
-    private bool isCollected = false;   // Bandera para evitar recolecciones múltiples
+    public float detectionRadius = 4f;
+    public AudioClip recolectarSonido;
+    private AudioSource audioSource;
+    private Transform player;
+    private GameManager gameManager;
+    private bool isCollected = false;
+    private SpriteRenderer spriteRenderer;
+
+    private Vector3 initialScale; // Escala inicial tomada del objeto
 
     void Start()
     {
-        // Buscar el transform del jugador usando el tag "Player"
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
-
-        // Obtener referencia al GameManager
         gameManager = FindObjectOfType<GameManager>();
-
-        // Agregar un AudioSource si no existe
         audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;  // Para que no suene al inicio
+        audioSource.playOnAwake = false;
         audioSource.clip = recolectarSonido;
+
+        // Obtener el SpriteRenderer y la escala inicial
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+            Debug.LogError("El objeto no tiene un SpriteRenderer asignado.");
+
+        initialScale = transform.localScale;
 
         if (player == null)
             Debug.LogError("El jugador no fue encontrado. Asegúrate de que el GameObject del jugador tenga el tag 'Player'.");
@@ -33,36 +37,45 @@ public class NoteCollector : MonoBehaviour
 
     void Update()
     {
-        // Verificar si el jugador está cerca, presiona 'E', y la nota no ha sido recolectada
         if (!isCollected && player != null && Vector3.Distance(transform.position, player.position) <= detectionRadius && Input.GetKeyDown(KeyCode.E))
         {
-            isCollected = true; // Marcar como recolectado
+            isCollected = true;
 
-            // Reproducir el sonido
             if (audioSource != null && recolectarSonido != null)
             {
                 audioSource.Play();
             }
 
-            // Notificar al GameManager y destruir la nota después del sonido
-            StartCoroutine(RecolectarDespuesDeSonido());
+            // Iniciar la animación de enrollado
+            StartCoroutine(RecolectarConEnrollado());
         }
     }
 
-    // Corrutina para esperar a que el sonido termine antes de destruir el objeto
-    private IEnumerator RecolectarDespuesDeSonido()
+    private IEnumerator RecolectarConEnrollado()
     {
-        // Espera hasta que el sonido termine
-        yield return new WaitWhile(() => audioSource.isPlaying);
+        float duration = 1f; // Duración de la animación
+        float elapsed = 0f;
 
-        // Notificar al GameManager
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            // Simular el enrollado respetando la escala inicial
+            float rollEffect = Mathf.Sin(t * Mathf.PI); // Movimiento sinusoidal
+            transform.localScale = new Vector3(initialScale.x * (1f - rollEffect), initialScale.y, initialScale.z); // Modificar solo el ancho
+            transform.localRotation = Quaternion.Euler(0, 0, rollEffect * 45f); // Añadir un ligero giro
+
+            // Simular profundidad con un desplazamiento en Z
+            transform.position += new Vector3(0, 0, rollEffect * 0.01f);
+
+            yield return null;
+        }
+
+        // Notificar al GameManager y destruir la nota
         gameManager.NotaRecolectada(this.gameObject);
-
-        // Destruir la nota
-        Destroy(gameObject);
     }
 
-    // Dibujar el radio de detección en la vista de la escena (opcional, para visualización)
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

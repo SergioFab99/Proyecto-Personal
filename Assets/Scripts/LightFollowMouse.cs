@@ -13,6 +13,7 @@ public class LightFollowMouse : MonoBehaviour
     private bool isFlickering = false;
     private float timeElapsed = 0f;  // Tiempo transcurrido desde el inicio
     private bool canFlicker = false;  // Controla cuando la linterna puede empezar a fallar
+    private float nextFlickerAllowedTime = 0f;  // Tiempo para permitir el siguiente fallo
 
     private void Update()
     {
@@ -25,10 +26,10 @@ public class LightFollowMouse : MonoBehaviour
         }
 
         // Si la linterna no está parpadeando y ha pasado más de 60 segundos
-        if (!isFlickering && canFlicker)
+        if (!isFlickering && canFlicker && Time.time >= nextFlickerAllowedTime)
         {
-            // Hacer que la linterna falle aleatoriamente entre 50 y 70 segundos
-            if (timeElapsed >= 60f + Random.Range(50f, 70f))
+            // Hacer que la linterna falle aleatoriamente entre 20 y 30 segundos
+            if (timeElapsed >= 60f + Random.Range(20f, 30f))
             {
                 StartCoroutine(FlickerLight());
             }
@@ -57,5 +58,8 @@ public class LightFollowMouse : MonoBehaviour
         // Después del parpadeo, asegura que la luz vuelva a estar encendida
         flashlight.enabled = true;
         isFlickering = false;
+
+        // Establece un tiempo mínimo para permitir el siguiente fallo
+        nextFlickerAllowedTime = Time.time + Random.Range(20f, 30f);
     }
 }

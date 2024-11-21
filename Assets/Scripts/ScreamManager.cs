@@ -6,17 +6,17 @@ using System.Collections.Generic;
 public class ScreamManager : MonoBehaviour
 {
     [Header("Screamer Settings")]
-    public Transform panelParent;        // Panel que contiene las imágenes
-    public Image panelBackground;        // Fondo negro del panel
-    private float screamerDuration = 0.3f; // Duración durante la cual el screamer estará activo
-    public Vector2 intervalRange = new Vector2(50, 70); // Intervalo aleatorio entre screamers
-    private float initialDelay = 240f;    // Tiempo antes del primer screamer
+    [SerializeField] private Transform panelParent;           // Panel que contiene las imágenes
+    [SerializeField] private Image panelBackground;           // Fondo negro del panel
+    [SerializeField] private float screamerDuration = 0.3f;  // Duración durante la cual el screamer estará activo
+    [SerializeField] private Vector2 intervalRange = new Vector2(50, 70); // Intervalo aleatorio entre screamers (en segundos)
+    [SerializeField] private float initialDelay = 120f;      // Tiempo antes del primer screamer (en segundos)
 
-    private int currentIndex = 0;        // Índice del screamer actual
+    private int currentIndex = 0;                           // Índice del screamer actual
 
     [Header("Audio Settings")]
-    public AudioSource[] screamerAudioSources; // Arreglo de diferentes sonidos
-    private List<int> availableSoundIndexes;   // Lista para controlar sonidos no repetidos
+    [SerializeField] private AudioSource[] screamerAudioSources; // Arreglo de diferentes sonidos
+    private List<int> availableSoundIndexes;                  // Lista para controlar sonidos no repetidos
 
     private void Start()
     {
@@ -67,6 +67,7 @@ public class ScreamManager : MonoBehaviour
 
     private IEnumerator ScreamerSequence()
     {
+        // Espera el retraso inicial antes de comenzar la secuencia
         yield return new WaitForSeconds(initialDelay);
 
         while (currentIndex < panelParent.childCount)
@@ -81,11 +82,12 @@ public class ScreamManager : MonoBehaviour
             Transform currentChild = panelParent.GetChild(currentIndex);
             currentChild.gameObject.SetActive(true);
 
-            // Reproduce un sonido aleatorio no repetido
-            PlayRandomSound();
-
             Debug.Log($"Activando: {currentChild.name}");
 
+            // Reproduce un sonido aleatorio no repetido y limítalo a 1 segundo
+            StartCoroutine(PlaySoundWithLimit());
+
+            // Espera la duración del screamer
             yield return new WaitForSeconds(screamerDuration);
 
             // Desactiva la imagen
@@ -113,7 +115,7 @@ public class ScreamManager : MonoBehaviour
         Debug.Log("Todos los screamers han sido activados una vez.");
     }
 
-    private void PlayRandomSound()
+    private IEnumerator PlaySoundWithLimit()
     {
         if (availableSoundIndexes.Count == 0)
         {
@@ -128,8 +130,14 @@ public class ScreamManager : MonoBehaviour
         // Reproduce el AudioSource correspondiente
         if (screamerAudioSources[soundIndex] != null)
         {
-            screamerAudioSources[soundIndex].volume = 1f; // Asegura que el volumen esté activo
-            screamerAudioSources[soundIndex].Play();
+            AudioSource selectedAudio = screamerAudioSources[soundIndex];
+            selectedAudio.Play();
+
+            // Espera 1 segundo antes de detener el audio
+            yield return new WaitForSeconds(1f);
+
+            // Detén el audio manualmente
+            selectedAudio.Stop();
         }
 
         // Elimina el índice utilizado de la lista
@@ -148,8 +156,11 @@ public class ScreamManager : MonoBehaviour
 
     private void SetPanelBackgroundAlpha(float alpha)
     {
-        Color color = panelBackground.color;
-        color.a = alpha;
-        panelBackground.color = color;
+        if (panelBackground != null)
+        {
+            Color color = panelBackground.color;
+            color.a = alpha;
+            panelBackground.color = color;
+        }
     }
 }
