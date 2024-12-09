@@ -15,12 +15,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Nivel1.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Creditos.unity
-    guid: a9e58f570580453499d700f45a1e5694
+    path: Assets/Scenes/TeCargoelpayaso.unity
+    guid: db21a3d3a0e83ac4795b8e392a0fe6b1
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 20c43b59749fc3f43a20c5c91d98f84b
   - enabled: 1
+    path: Assets/Scenes/Creditos.unity
+    guid: a9e58f570580453499d700f45a1e5694
+  - enabled: 1
     path: Assets/Scenes/Ganaste.unity
     guid: 6bf35d948ae8c3a4fb3e7cc4d1a587c0
+  - enabled: 1
+    path: Assets/Scenes/Opciones.unity
+    guid: 096e8c22a8f7d1847ae3b28a51c1c782
   m_configObjects: {}

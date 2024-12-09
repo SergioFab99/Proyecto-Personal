@@ -122,7 +122,7 @@ public class FollowPlayer : MonoBehaviour
             // Verificar si el enemigo está a 3 unidades de distancia del jugador para cambiar de escena
             if (distanceToPlayer <= 3f)
             {
-                SceneManager.LoadScene("GameOver"); // Cargar la escena GameOver
+                SceneManager.LoadScene("TeCargoelpayaso"); // Cargar la escena
             }
 
             // Actualizar la posición para verificar si está atascado

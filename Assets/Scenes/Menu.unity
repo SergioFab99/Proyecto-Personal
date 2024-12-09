@@ -689,7 +689,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1e5f8aa71d47f474b8c33474e90e3211, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 11975983881cb594e84917be4ed7798e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -870,6 +870,7 @@ GameObject:
   - component: {fileID: 794579533}
   - component: {fileID: 794579532}
   - component: {fileID: 794579531}
+  - component: {fileID: 794579537}
   - component: {fileID: 794579536}
   - component: {fileID: 794579535}
   - component: {fileID: 794579534}
@@ -1027,6 +1028,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundClip: {fileID: 8300000, guid: f2d427f34f232174780d0d5df446e0fe, type: 3}
+--- !u!114 &794579537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794579529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b211dfe28e52a4fa465757a417e527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
+  sceneName: Opciones
 --- !u!1 &809545471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,7 +1100,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The clown
+  m_text: the pursuer
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 96b681e0983112548b1d641c1ac608ba, type: 2}
   m_sharedMaterial: {fileID: -4753450203104370352, guid: 96b681e0983112548b1d641c1ac608ba, type: 2}
@@ -1237,7 +1252,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Forgotten nightmares
+  m_text: anxiety  in  the  dark
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 96b681e0983112548b1d641c1ac608ba, type: 2}
   m_sharedMaterial: {fileID: -4753450203104370352, guid: 96b681e0983112548b1d641c1ac608ba, type: 2}
@@ -1356,7 +1371,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618170332}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 9ef22d1b885ccb149a43f06aa6ebc1d3, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: cfe412e8e0511ca488fcd43aae0be1da, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 412353474}
